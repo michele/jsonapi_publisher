@@ -1,3 +1,6 @@
+require "bunny"
+require "active_record"
+
 module JsonapiPublisher
   def self.publish(routing_key, message = {}, event="")
     if message.is_a?(ActiveRecord::Base)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jsonapi_publisher (0.1.0)
+    jsonapi_publisher (0.1.2)
       active_model_serializers (~> 0.10)
       bunny
       rails (~> 4.2)
