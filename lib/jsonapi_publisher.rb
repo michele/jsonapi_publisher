@@ -1,5 +1,8 @@
-require 'bunny'
-require 'aws-sdk'
+begin
+  require 'bunny'
+  require 'aws-sdk'
+rescue
+end
 require 'active_record'
 
 module JsonapiPublisher
