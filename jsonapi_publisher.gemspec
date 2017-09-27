@@ -17,6 +17,10 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '>= 4.2'
-  s.add_dependency 'bunny'
   s.add_dependency 'active_model_serializers', '~> 0.10'
+  s.add_development_dependency 'bunny'
+  s.add_development_dependency 'aws-sdk'
+  s.add_development_dependency 'minitest-hooks'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'faker'
 end
