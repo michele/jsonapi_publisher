@@ -10,11 +10,10 @@ JsonapiPublisher.publish(routing_key, object, "CREATED")
 ```
 
 ## Installation
-
-choose sqs or rabbit mq with
-`gem 'bunny', '~> 2.7'`
-or
-`gem 'aws-sdk', '~> 2'`
+Choose `sqs` or `rabbit` mq with  
+`gem 'bunny', '~> 2.7'`  
+or  
+`gem 'aws-sdk', '~> 2'`  
 
 Add this line to your application's Gemfile:
 
@@ -30,6 +29,13 @@ $ bundle
 Or install it yourself as:
 ```bash
 $ gem install jsonapi_publisher
+```
+## Configuration
+Inside `config\initializers\jsonapi_publisher.rb` put
+```ruby
+JsonapiPublisher.configure do |config|
+  config.qservice = XXX # XXX can be 'sqs' or 'rmq'
+end
 ```
 
 ## Testing
