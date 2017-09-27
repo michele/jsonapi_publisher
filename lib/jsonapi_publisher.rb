@@ -1,30 +1,18 @@
-begin
-  require 'bunny'
-  require 'aws-sdk'
-rescue
-end
 require 'active_record'
+require 'configuration'
 
 module JsonapiPublisher
-  class Configuration
-    attr_accessor :qservice
-
-    def initialize
-      @qservice = nil
-    end
-  end
-
   class << self
     attr_writer :configuration
     attr_accessor :connection, :channel
+  end
 
-    def configuration
-      @configuration ||= Configuration.new
-    end
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
 
-    def configure
-      yield(configuration)
-    end
+  def self.configure
+    yield(configuration)
   end
 
   def self.publish(routing_key, message = {}, event = '')

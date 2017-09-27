@@ -4,6 +4,8 @@ require 'minitest/hooks/default'
 require 'jsonapi_publisher'
 require 'pry'
 require 'faker'
+require 'bunny'
+require 'aws-sdk'
 
 ENV['AWS_ACCESS_KEY_ID'] = 'x'
 ENV['AWS_SECRET_ACCESS_KEY'] = 'x'
@@ -24,15 +26,17 @@ class JsonapiPublisher::Test < ActiveSupport::TestCase
         config.qservice = 'sqs'
       end
       # Clean all messages
-      resp = JsonapiPublisher.connection.receive_message({
-        queue_url: ENV['QUEUE_URL'],
-        max_number_of_messages: 10
-      })
-      resp.messages.each do |message|
-        JsonapiPublisher.connection.delete_message({
+      if JsonapiPublisher.connection.list_queues.queue_urls.length > 1
+        resp = JsonapiPublisher.connection.receive_message({
           queue_url: ENV['QUEUE_URL'],
-          receipt_handle: message.receipt_handle
+          max_number_of_messages: 10
         })
+        resp.messages.each do |message|
+          JsonapiPublisher.connection.delete_message({
+            queue_url: ENV['QUEUE_URL'],
+            receipt_handle: message.receipt_handle
+          })
+        end
       end
     end
 

@@ -61,7 +61,7 @@ GEM
       aws-sdk-core (= 2.10.52)
     aws-sigv4 (1.0.2)
     builder (3.2.3)
-    bunny (2.7.0)
+    bunny (2.7.1)
       amq-protocol (>= 2.2.0)
     case_transform (0.2)
       activesupport
