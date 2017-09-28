@@ -41,7 +41,7 @@ end
 ## Testing
 Run
 `docker run -p 9324:9324 lightspeedretail/fake-sqs`
-`docker run -d -p 5672:5672 --name rabbitmq rabbitmq:latest`
+`docker run -d -p 5672:5672 rabbitmq:latest`
 `rake test`
 
 ## License
