@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jsonapi_publisher (0.2.2)
+    jsonapi_publisher (0.2.3)
       active_model_serializers (~> 0.10)
       rails (>= 4.2)
 

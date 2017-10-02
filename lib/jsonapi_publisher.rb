@@ -54,7 +54,7 @@ module JsonapiPublisher
         c.start
       end
     elsif configuration.qservice == 'sqs'
-      @connection ||= Aws::SQS::Client.new(endpoint: ENV['AWS_SQS_ENDPOINT'], region: ENV['AWS_REGION'], secret_access_key: ENV['AWS_ACCESS_KEY_ID'], access_key_id: ENV['AWS_SECRET_ACCESS_KEY'])
+      @connection ||= Aws::SQS::Client.new(endpoint: ENV['AWS_SQS_ENDPOINT'], region: ENV['AWS_REGION'] || 'eu-west-1', secret_access_key: ENV['AWS_ACCESS_KEY_ID'], access_key_id: ENV['AWS_SECRET_ACCESS_KEY'])
     end
   end
 
