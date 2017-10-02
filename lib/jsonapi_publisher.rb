@@ -19,9 +19,7 @@ module JsonapiPublisher
     if message.is_a?(ActiveRecord::Base)
       message = ActiveModelSerializers::SerializableResource.new(message).as_json
     end
-    if event.present?
-      message = { event: event }.merge(message)
-    end
+    message = { event: event }.merge(message) if event.present?
     if configuration.qservice == 'rmq'
       x = channel.topic(ENV['EVENT_TOPIC'] || 'events')
       x.publish(message.to_json, routing_key: routing_key)
@@ -39,22 +37,24 @@ module JsonapiPublisher
     if configuration.qservice == 'rmq'
       @channel ||= connection.create_channel
     elsif configuration.qservice == 'sqs'
-      @channel ||= connection.create_queue({
-        queue_name: ENV['EVENT_TOPIC'],
-        attributes: {
-          "FifoQueue" => "true"
-        }
-      })
+      @channel ||= connection.create_queue(queue_name: ENV['EVENT_TOPIC'],
+                                           attributes: {
+                                             'FifoQueue' => 'true'
+                                           })
     end
   end
 
   def self.connection
     if configuration.qservice == 'rmq'
-      @connection ||= Bunny.new(host: ENV['RABBITMQ_HOST'] || 'localhost', user: ENV['RABBITMQ_USER'] || 'guest', pass: ENV['RABBITMQ_PASS'] || 'guest').tap do |c|
-        c.start
-      end
+      @connection ||= Bunny.new(host: ENV['RABBITMQ_HOST'] || 'localhost', user: ENV['RABBITMQ_USER'] || 'guest', pass: ENV['RABBITMQ_PASS'] || 'guest').tap(&:start)
     elsif configuration.qservice == 'sqs'
-      @connection ||= Aws::SQS::Client.new(endpoint: ENV['AWS_SQS_ENDPOINT'], region: ENV['AWS_REGION'] || 'eu-west-1', secret_access_key: ENV['AWS_ACCESS_KEY_ID'], access_key_id: ENV['AWS_SECRET_ACCESS_KEY'])
+      options = {
+        region: ENV['AWS_REGION'] || 'eu-west-1'
+      }
+      options[:endpoint] = ENV['AWS_SQS_ENDPOINT'] if ENV['AWS_SQS_ENDPOINT']
+      options[:access_key_id] = ENV['AWS_ACCESS_KEY_ID'] if ENV['AWS_ACCESS_KEY_ID']
+      options[:access_key_id] = ENV['AWS_SECRET_ACCESS_KEY'] if ENV['AWS_SECRET_ACCESS_KEY']
+      @connection ||= Aws::SQS::Client.new(options)
     end
   end
 
