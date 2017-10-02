@@ -26,9 +26,9 @@ module JsonapiPublisher
     elsif configuration.qservice == 'sqs'
       message_attributes = { routing_key: { string_value: routing_key, data_type: 'String' } }
       if configuration.avoid_send
-        p; p "Requesting with queue_url: #{ENV['QUEUE_URL'] || channel}, message_body: #{message.to_json}, message_attributes: #{message_attributes}"
+        p; p "Requesting with queue_url: #{ENV['QUEUE_URL'] || channel.queue_url}, message_body: #{message.to_json}, message_attributes: #{message_attributes}"
       else
-        connection.send_message(queue_url: ENV['QUEUE_URL'] || channel, message_body: message.to_json, message_attributes: message_attributes)
+        connection.send_message(queue_url: ENV['QUEUE_URL'] || channel.queue_url, message_body: message.to_json, message_attributes: message_attributes)
       end
     end
   end
