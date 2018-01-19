@@ -1,7 +1,14 @@
 require 'active_record'
-require 'configuration'
 
 module JsonapiPublisher
+  class Configuration
+    attr_accessor :qservice, :avoid_send
+  
+    def initialize
+      @qservice = nil
+    end
+  end
+
   class << self
     attr_writer :configuration
     attr_accessor :connection, :channel
